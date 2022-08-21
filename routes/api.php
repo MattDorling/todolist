@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Models\Todo;
 use App\Http\Controllers\TodoController;
 
 /*
@@ -19,9 +20,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('/todos', [TodoController::class, 'index']);
-Route::prefix('/todo')->group(function () {
-    Route::post('/store', [ItemController::class, 'store']);
-    Route::put('/{id}', [ItemController::class, 'update']);
-    Route::delete('/{id}', [ItemController::class, 'destroy']);
-});
+// Route::get('todos', 'TodoController@index');
+// Route::get('todos/{todo}', 'TodoController@show');
+// Route::post('todos', 'TodoController@store');
+// Route::put('todos/{todo}', 'TodoController@update');
+// Route::delete('todos/{todo}', 'TodoController@delete');
+Route::resource('todos', TodoController::class);

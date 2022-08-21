@@ -14,8 +14,7 @@ class TodoController extends Controller
      */
     public function index()
     {
-        //
-        return Todo::orderBy('created_at', 'DESC')->get();
+        return Todo::orderBy('created_at', 'asc')->get();
     }
 
     /**
@@ -36,11 +35,15 @@ class TodoController extends Controller
      */
     public function store(Request $request)
     {
-        $newTodo = new Todo;
-        $newTodo->desc = $request->todo['desc'];
-        $newTodo->save();
+        $this->validate($request, [
+            'desc' => 'required',
+        ]);
 
-        return $newTodo;
+        $todo = new Todo;
+        $todo->desc = $request->input('desc');
+        $todo->done = False;
+        $todo->save();
+        return 200;
     }
 
     /**
@@ -51,24 +54,7 @@ class TodoController extends Controller
      */
     public function show($id)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Request $request, $id)
-    {
-        $todo = Todo::find($id);
-        if ($todo) {
-            $todo->desc = $request->todo('desc');
-            $todo->save();
-            return $todo;
-        }
-        return null;
+        return Todo::findorFail($id);
     }
 
     /**
@@ -80,13 +66,19 @@ class TodoController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $this->validate($request, [
+            'desc' => 'required',
+        ]);
+
         $todo = Todo::find($id);
         if ($todo) {
-            $todo->done = $request->todo('done');
+            $todo->desc = $request->input('desc');
             $todo->save();
-            return $todo;
+            return 200;
+        } else {
+            return 404;
         }
-        return null;
+        
     }
 
     /**
@@ -99,9 +91,11 @@ class TodoController extends Controller
     {
         $todo = Todo::find($id);
         if ($todo) {
-            $todo->delete();
-            return "Todo deleted.";
+            if ($todo->delete()) {
+                return 204;
+            }
+        } else {
+            return 404;
         }
-        return "Todo not found.";
     }
 }
