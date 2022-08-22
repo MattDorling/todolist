@@ -18,16 +18,6 @@ class TodoController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -43,7 +33,7 @@ class TodoController extends Controller
         $todo->desc = $request->input('desc');
         $todo->done = False;
         $todo->save();
-        return 200;
+        return response('Stored successfully', 201);
     }
 
     /**
@@ -73,10 +63,11 @@ class TodoController extends Controller
         $todo = Todo::find($id);
         if ($todo) {
             $todo->desc = $request->input('desc');
+            $todo->done = $request->input('done');
             $todo->save();
-            return 200;
+            return response('Updated successfully', 200);
         } else {
-            return 404;
+            return response('Not found', 404);
         }
         
     }
@@ -92,10 +83,10 @@ class TodoController extends Controller
         $todo = Todo::find($id);
         if ($todo) {
             if ($todo->delete()) {
-                return 204;
+                return response('Deleted successfully', 204);
             }
         } else {
-            return 404;
+            return response('Not found', 404);
         }
     }
 }
