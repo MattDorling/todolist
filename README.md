@@ -14,9 +14,10 @@ Switch to the repo folder
 
     cd todolist
 
-Install all the dependencies using composer
+Install all the dependencies using `composer` and `npm`
 
     composer install
+    npm install
 
 Copy the example env file and make the required configuration changes in the .env file
 
@@ -31,7 +32,8 @@ Run the database migrations (**Set the database connection in .env before migrat
     php artisan migrate
 
 Start the local development server
-
+    
+    npm run dev
     php artisan serve
 
-You can now access the server at http://localhost:8000
+You can now access the web app at http://localhost:8000
